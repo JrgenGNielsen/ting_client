@@ -28,11 +28,13 @@
 #       One or more of: quick, full, all. Default: [all].
 
 selenium :
-# - name : <test suite>
+- name : dummySeleniumTest
 #   path :
 #     Path to file, if different from default path, and named different than <test suite>.py
 #     Default path: test/selenium/<test suite>.py
 simpletest :
+- name : dummyDrupalUnitTest
+- name : dummyDrupalWebTestCase
 # DrupalUnitTestCase and DrupalWebTestCase
 #   path :
 #     Path to file, if different from default path, and named different than <test suite>.test

@@ -1,0 +1,16 @@
+<?php
+class dummyDrupalWebTestCase extends DrupalWebTestCase {
+
+  public static function getInfo() {
+    return array(
+      'name' => 'Dummy Drupal Web Test',
+      'description' => 'dummy test to automated testing up and running',
+      'group' => 'Netpunkt',
+    );
+  }
+
+  private function testDummy() {
+    $this->assertTrue('foo' == 'foo','Dummy test return true');
+  }
+
+}
