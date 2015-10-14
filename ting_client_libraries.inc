@@ -5,12 +5,12 @@
  */
 
 
-$path = libraries_get_path('WebserviceClient');
+$path = libraries_get_path('TingClient');
 
 // Do the autoload.
 spl_autoload_register('ting_client_autoload');
 function ting_client_autoload($class_name) {
-  $path = libraries_get_path('WebserviceClient');
+  $path = libraries_get_path('TingClient');
   $dirs = array(
     $path .'/lib/',
     $path .'/lib/cache/',
