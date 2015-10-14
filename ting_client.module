@@ -17,5 +17,5 @@ $params = array(
   'passwordAut' => '20Koster',
 );
 $response = $client->do_request('forsrights', $params);
-dpm($response);
+
 
