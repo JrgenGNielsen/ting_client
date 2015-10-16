@@ -1,0 +1,9 @@
+name = Ting Client
+description = Ting Client module
+version = 7.x-0.1
+core = 7.x
+package = Ding!
+
+; simple unit testing
+files[] = test/simpletest/dummyDrupalUnitTest.test
+files[] = test/simpletest/dummyDrupalWebTest.test

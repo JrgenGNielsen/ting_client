@@ -1,5 +1,5 @@
 <?php
-class dummyDrupalWebTestCase extends DrupalWebTestCase {
+class dummyDrupalWebTest extends DrupalWebTestCase {
 
   public static function getInfo() {
     return array(
