@@ -1,3 +1,5 @@
+<?php
+
 class dummyDrupalUnitTest extends DrupalUnitTestCase {
 
   public static function getInfo() {

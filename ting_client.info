@@ -5,5 +5,10 @@ package = Netpunkt libraries
 files[] = includes/TingClientDrupalCacher.php
 files[] = includes/TingClientDrupalLogger.php
 files[] = includes/ting_client_class.php
+; simple unit testing
+files[] = test/simpletest/dummyDrupalUnitTest.test
+files[] = test/simpletest/dummyDrupalWebTest.test
 
 dependencies[] = libraries
+
+

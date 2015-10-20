@@ -34,7 +34,7 @@ selenium :
 #     Default path: test/selenium/<test suite>.py
 simpletest :
 - name : dummyDrupalUnitTest
-- name : dummyDrupalWebTestCase
+- name : dummyDrupalWebTest
 # DrupalUnitTestCase and DrupalWebTestCase
 #   path :
 #     Path to file, if different from default path, and named different than <test suite>.test
