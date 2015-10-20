@@ -1,2 +1,32 @@
 <?php
 require_once 'ting_client_libraries.inc';
+
+/**
+ * Implements hook_menu
+ *
+ * @return mixed
+ */
+function ting_client_menu() {
+  $items['admin/config/serviceclient'] = array(
+    'title' => 'Webservice client settings',
+    'description' => 'Manage webservices.',
+    'position' => 'right',
+    'weight' => 20,
+    'page callback' => 'system_admin_menu_block_page',
+    'access arguments' => array('access administration pages'),
+    'file' => 'system.admin.inc',
+    'file path' => drupal_get_path('module', 'system'),
+  );
+
+  $items['admin/config/serviceclient/settings'] = array(
+    'title' => 'Urls and settings',
+    'description' => 'Manage webservice settings.',
+    'weight' => -20,
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('ting_client_admin_webservices_settings'),
+    'access arguments' => array('administer webservices settings'),
+    'file' => 'ting_client.admin.inc'
+  );
+
+  return $items;
+}
