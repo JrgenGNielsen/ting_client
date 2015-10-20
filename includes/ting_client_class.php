@@ -10,5 +10,9 @@
 class ting_client_class extends TingClient {
 
   public function do_request($name, $params, $cache_me = TRUE) {
+    $request = $this->getRequestFactory()->getNamedRequest($name, $params);
+    $response = $this->execute($request);
+
+    return $response;
   }
 }
