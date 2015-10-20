@@ -2,7 +2,7 @@ name = ting_client
 description = Handle integration with TingClient library
 core = 7.x
 package = Netpunkt libraries
-files[] = includes/TingClienDrupalCacher.php
+files[] = includes/TingClientDrupalCacher.php
 files[] = includes/TingClientDrupalLogger.php
 files[] = includes/ting_client_class.php
 

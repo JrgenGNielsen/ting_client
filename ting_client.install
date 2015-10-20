@@ -7,7 +7,7 @@
  */
 function ting_client_requirements($phase) {
   $requirements = array();
-  // we know that libraries module is there - it is in dependencise
+  // we know that libraries module is there - it is in dependencies
   // disregard the phase - always check
   $path = libraries_get_path('TingClient');
   if (empty($path)) {

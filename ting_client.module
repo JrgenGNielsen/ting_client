@@ -8,17 +8,3 @@
  */
 
 require_once 'ting_client_libraries.inc';
-
-function ting_client_init() {
-  $client = new ting_client_class();
-  $params = array(
-    'action' => 'forsRightsRequest',
-    'userIdAut' => 'netpunkt',
-    'groupIdAut' => '010100',
-    'passwordAut' => '20Koster',
-  );
-  $response = $client->do_request('forsrights', $params);
-  dpm($response);
-}
-
-
