@@ -1,0 +1,10 @@
+<?php
+/*
+ * @file - drupal needs this file
+ */
+//
+/**
+ * @file load Ting client library
+ */
+
+require_once 'ting_client_libraries.inc';
