@@ -1,1 +1,2 @@
 <?php
+require_once 'ting_client_libraries.inc';
