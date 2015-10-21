@@ -1,10 +1,21 @@
 <?php
-require_once 'ting_client_libraries.inc';
+/**
+ * Module defines ting_client_class (see includes/ting_client_class.php)
+ */
+
+// Include TingClient library
+$path = libraries_get_path('TingClient');
+if (!empty($path)) {
+  require_once $path . '/lib/TingClient.php';
+}
+else{
+  throw new TingClientMissingLibraryException('Missing TingCLient library');
+}
 
 /**
  * Implements hook_menu
  *
- * @return mixed
+ * @return array
  */
 function ting_client_menu() {
   $items['admin/config/serviceclient'] = array(
@@ -29,4 +40,13 @@ function ting_client_menu() {
   );
 
   return $items;
+}
+
+/**
+ * Implements hook_flush_caches().
+ *
+ * Delete webservices variable.
+ */
+function ting_client_flush_caches() {
+  variable_del('ting_client_webservice_definitions');
 }

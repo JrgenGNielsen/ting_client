@@ -1,29 +1,35 @@
 <?php
 /**
- * Form builder; Configure ting settings for this site.
+ * Form builder; Configure settings for this site.
  *
  * @ingroup forms
  * @see system_settings_form()
  */
 function ting_client_admin_webservices_settings($form_state) {
-  form_load_include($form_state, 'inc', 'ting', 'ting_client.admin');
   $form = array();
 
-  $form['webservices'] = array(
+  // @TODO this can be done as a loop on webservices.
+  // like this:
+  // $webservices = ting_client_get_webservices();
+  // foreach ($webservices .....
+
+  $form['forsrights'] = array(
     '#type' => 'fieldset',
-    '#title' => t('client webservice settings'),
+    '#title' => t('Forsrights settings'),
     '#collapsible' => TRUE,
     '#collapsed' => FALSE,
     '#tree' => FALSE,
   );
 
-  $form['webservices']['ting_search_url'] = array(
+  $form['forsrights']['bibdk_forsrights_url'] = array(
     '#type' => 'textfield',
-    '#title' => t('Search service URL'),
-    '#description' => t('URL to the Ting search webservice, e.g. http://bibliotek.dk/openbibdk/next/'),
+    '#title' => t('forsrights URL'),
+    '#description' => t('URL to the forsrights webservice, e.g. http://forsrights.addi.dk/'),
     '#required' => TRUE,
-    '#default_value' => variable_get('ting_search_url', ''),
+    '#default_value' => variable_get('bibdk_forsrights_url', ''),
   );
 
-  return $form;
+  // @TODO add cache control
+
+  return system_settings_form($form);
 }
