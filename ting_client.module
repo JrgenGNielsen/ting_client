@@ -9,7 +9,24 @@ if (!empty($path)) {
   require_once $path . '/lib/TingClient.php';
 }
 else{
+  // This exception is for the developer to handle
   throw new TingClientMissingLibraryException('Missing TingCLient library');
+}
+
+
+/**
+ * Initialize ting_client_class and do the request
+ * @param string $name
+ *  Name of the request
+ * @param array $params
+ *  Parameters for the request.
+ *
+ * @return string
+ */
+function ting_client_do_request ($name, $params) {
+  $client = new ting_client_class();
+  $response = $client->do_request($name, $params);
+  return $response;
 }
 
 /**
