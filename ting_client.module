@@ -3,14 +3,21 @@
  * Module defines ting_client_class (see includes/ting_client_class.php)
  */
 
-// Include TingClient library
-$path = libraries_get_path('TingClient');
-if (!empty($path)) {
-  require_once $path . '/lib/TingClient.php';
-}
-else{
-  // This exception is for the developer to handle
-  throw new TingClientMissingLibraryException('Missing TingCLient library');
+/**
+ * Implements hook_init().
+ *
+ * Include TingClient. If TingClient is not there it is headache of the developer.
+ */
+function ting_client_init() {
+  // Include TingClient library
+  $path = libraries_get_path('TingClient');
+  if (!empty($path)) {
+    require_once $path . '/lib/TingClient.php';
+  }
+  else{
+    // This exception is for the developer to handle
+    throw new TingClientMissingLibraryException('Missing TingCLient library');
+  }
 }
 
 
