@@ -37,8 +37,9 @@ class ting_client_class extends TingClient {
    * @throws \TingClientException
    */
   public function do_request($name, $params, $cache_me = TRUE) {
-    $webservices = $this->getWebservices();
-    $this->getRequestFactory()->addToUrls($webservices);
+    if ($webservices = $this->getWebservices()) {
+      $this->getRequestFactory()->addToUrls($webservices);
+    }
 
     $request = $this->getRequestFactory()->getNamedRequest($name, $params);
     $response = $this->execute($request);
