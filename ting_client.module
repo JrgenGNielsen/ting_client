@@ -16,7 +16,7 @@ function ting_client_init() {
   }
   else{
     // This exception is for the developer to handle
-    throw new TingClientMissingLibraryException('Missing TingCLient library');
+    drupal_set_message('Missing TingCLient library', 'error');
   }
 }
 
