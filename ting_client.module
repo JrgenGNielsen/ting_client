@@ -18,22 +18,6 @@ function ting_client_init() {
     // This exception is for the developer to handle
     drupal_set_message('Missing TingCLient library', 'error');
   }
-
-
-
-
-  // while developing
-  /* $params = array(
-     'action' => 'forsRightsRequest',
-     'userIdAut' => 'netpunkt',
-     'groupIdAut' => '010100',
-     'passwordAut' => '20Koster',
-     'outputType' => 'json',
-   );
-
-   $hest = ting_client_do_request('forsrights', $params);
-   dpm($hest);*/
-
 }
 
 
