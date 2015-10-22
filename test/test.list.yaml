@@ -51,3 +51,5 @@ manual :
 other :
 #   path :
 #     Default path: test/other/<test suite>
+phpunit :
+- name : dummyPhpUnitTest
