@@ -1,4 +1,9 @@
 <?php
+/**
+ * @file
+ *
+ * Webservice mockup
+ */
 
 /**
  * Implements hook_ting_client_webservice
@@ -26,6 +31,9 @@ function webservice_mockup_menu() {
   );
 }
 
+/**
+ * Mockup a response
+ */
 function webservice_mockup_response(){
   drupal_json_output(array('hest'));
   drupal_exit();

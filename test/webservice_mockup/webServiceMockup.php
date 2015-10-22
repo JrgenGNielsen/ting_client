@@ -1,4 +1,12 @@
 <?php
+
+/**
+ * @file
+ *
+ * A mockup request to be used wiht ting_client
+ *
+ * Class webServiceMockup
+ */
 class webServiceMockup extends TingClientRequest{
   public function processResponse(stdClass $response) {
     return $response;
