@@ -1,2 +1,77 @@
 <?php
-require_once 'ting_client_libraries.inc';
+/**
+ * Module defines ting_client_class (see includes/ting_client_class.php)
+ */
+
+/**
+ * Implements hook_init().
+ *
+ * Include TingClient. If TingClient is not there it is headache of the developer.
+ */
+function ting_client_init() {
+  // Include TingClient library
+  $path = libraries_get_path('TingClient');
+  if (!empty($path)) {
+    require_once $path . '/lib/TingClient.php';
+  }
+  else{
+    // This exception is for the developer to handle
+    drupal_set_message('Missing TingCLient library', 'error');
+  }
+}
+
+
+/**
+ * Initialize ting_client_class and do the request
+ * 
+ * @param string $name
+ *  Name of the request
+ * @param array $params
+ *  Parameters for the request.
+ *
+ * @return string
+ */
+function ting_client_do_request ($name, $params) {
+  $client = new ting_client_class();
+  $response = $client->do_request($name, $params);
+  return $response;
+}
+
+/**
+ * Implements hook_menu
+ *
+ * @return array
+ */
+function ting_client_menu() {
+  $items['admin/config/serviceclient'] = array(
+    'title' => 'Webservice client settings',
+    'description' => 'Manage webservices.',
+    'position' => 'right',
+    'weight' => 20,
+    'page callback' => 'system_admin_menu_block_page',
+    'access arguments' => array('access administration pages'),
+    'file' => 'system.admin.inc',
+    'file path' => drupal_get_path('module', 'system'),
+  );
+
+  $items['admin/config/serviceclient/settings'] = array(
+    'title' => 'Urls and settings',
+    'description' => 'Manage webservice settings.',
+    'weight' => -20,
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('ting_client_admin_webservices_settings'),
+    'access arguments' => array('administer webservices settings'),
+    'file' => 'ting_client.admin.inc'
+  );
+
+  return $items;
+}
+
+/**
+ * Implements hook_flush_caches().
+ *
+ * Delete webservices variable.
+ */
+function ting_client_flush_caches() {
+  variable_del('ting_client_webservice_definitions');
+}

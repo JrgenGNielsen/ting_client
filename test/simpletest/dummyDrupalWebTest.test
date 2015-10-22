@@ -12,5 +12,4 @@ class dummyDrupalWebTest extends DrupalWebTestCase {
   private function testDummy() {
     $this->assertTrue('foo' == 'foo','Dummy test return true');
   }
-
 }
