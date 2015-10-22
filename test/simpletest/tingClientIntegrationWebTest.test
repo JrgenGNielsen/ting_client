@@ -12,7 +12,7 @@ class tingClientIntegrationWebTest extends DrupalWebTestCase {
 
   public function setUp() {
     parent::setUp();
-    module_enable(array('ting_client'));
+    module_enable(array('ting_client', 'webservice_mockup'));
   }
 
 
@@ -29,7 +29,6 @@ class tingClientIntegrationWebTest extends DrupalWebTestCase {
   }
 
   public function testWebservicHook(){
-    module_enable(array('webservice_mockup'));
     $this->assertTrue(module_exists('webservice_mockup'), 'webservice_mockup enabled as expected');
     $params = array('action' => 'hest');
     ting_client_do_request('webservice_mockup', $params);

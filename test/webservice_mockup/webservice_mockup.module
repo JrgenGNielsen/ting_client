@@ -1,8 +1,8 @@
 <?php
 
 /**
- * Implements hook_ting_client_webservice (@see ting_client.module)
- * */
+ * Implements hook_ting_client_webservice
+ */
 function webservice_mockup_ting_client_webservice() {
   $ret = array();
   $ret['webservice_mockup']['class'] = 'webservice_mockup';
