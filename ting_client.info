@@ -10,7 +10,8 @@ files[] = Exceptions/TingClientMissingLibraryExcepption.php
 ; simple unit testing
 files[] = test/simpletest/dummyDrupalUnitTest.test
 files[] = test/simpletest/dummyDrupalWebTest.test
-files[] = test/tingClientIntegrationWebTest.test
+files[] = test/simpletest/tingClientIntegrationWebTest.test
+files[] = test/simpletest/tingClientUnitTest.test
 
 dependencies[] = libraries
 

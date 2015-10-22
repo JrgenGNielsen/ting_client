@@ -1,0 +1,17 @@
+<?php
+class tingClientUnitTest extends DrupalUnitTestCase {
+
+  public static function getInfo() {
+    return array(
+      'name' => 'Ting integration unit test',
+      'description' => 'unit test ting integration',
+      'group' => 'Netpunkt',
+    );
+  }
+
+  private function testHest() {
+    $this->assertTrue('hest' == 'hest','HEST is always true');
+  }
+
+
+}
