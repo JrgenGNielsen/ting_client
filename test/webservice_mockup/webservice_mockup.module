@@ -6,7 +6,7 @@
  */
 
 /**
- * Implements hook_ting_client_webservice
+ * Implements hook_ting_client_webservice()
  */
 function webservice_mockup_ting_client_webservice() {
   $ret = array();
