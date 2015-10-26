@@ -37,6 +37,8 @@ class ting_client_class extends TingClient {
    * @throws \TingClientException
    */
   public function do_request($name, $params, $cache_me = TRUE) {
+    // @TODO start timer
+
     if ($webservices = $this->getWebservices()) {
       $this->getRequestFactory()->addToUrls($webservices);
     }
@@ -46,26 +48,62 @@ class ting_client_class extends TingClient {
     }
     catch (TingClientException $e) {
       drupal_set_message($e->getMessage(), 'ting client','error');
-      return;
+      return FALSE;
     }
 
-    $cacher = new TingClientDrupalCacher($request);
-    $this->setCacher($cacher);
+    // only use drupal caccher if caching is set
+    // @see admin/config/serviceclient/settings
+    // Otherwise use default cacher in TingClient library
+    // @see libraries/TingCLient/cache/TingClientCacher.php
 
+    // check overall caching
+    if (variable_get('webservice_client_enable_cache', FALSE) !== FALSE ) {
+      // check caching for individual request
+      if (ting_client_class::cacheEnable($request) !== FALSE) {
+        $cacher = new TingClientDrupalCacher($request);
+        $this->setCacher($cacher);
+      }
+    }
+
+    // alwaays use drupal logger
     $logger = new TingClientDrupalLogger();
     $this->setLogger($logger);
-
+    // execute request
     $response = $this->execute($request);
-
+    // @ TODO stop timer
     return $response;
   }
 
   /**
-   * Get webservices defined in HOOK_ting_client_webservice.
+   * Should given request be cached ?
+   *
+   * @param \TingClientRequest $request
+   *
+   * @return string|bool
+   */
+  public static function cacheEnable(TingClientRequest $request) {
+    $class_name = get_class($request);
+    return variable_get($class_name . TingClientRequest::CACHEENABLE, FALSE);
+  }
+
+  /**
+   * Get timeout for given request.
+   *
+   * @param \TingClientRequest $request
+   *
+   * @return string|bool
+   */
+  public static function cacheTimeOut(TingClientRequest $request) {
+    $class_name = get_class($request);
+    return variable_get($class_name . TingClientRequest::CACHELIFETIME, 1);
+  }
+
+  /**
+   * Get webservices defined in HOOK_ting_client_webservice().
    *
    * @return array|FALSE
    */
-  private function getWebservices() {
+  public function getWebservices() {
     // check if services has already been set.
     $webservices = variable_get('ting_client_webservice_definitions', FALSE);
     if ($webservices === FALSE) {
