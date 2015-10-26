@@ -19,3 +19,16 @@ function ting_client_requirements($phase) {
 
   return $requirements;
 }
+
+
+/**
+ * Implements HOOK_schema()
+ *
+ * Webservices default cache bin.
+ *
+ * @return array
+ */
+function ting_client_schema() {
+  $schema['cache_bibdk_webservices'] = drupal_get_schema_unprocessed('system', 'cache');
+  return $schema;
+}
