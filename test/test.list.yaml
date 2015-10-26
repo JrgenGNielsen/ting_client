@@ -35,7 +35,7 @@ selenium :
 simpletest :
 - name : dummyDrupalUnitTest
 - name : dummyDrupalWebTest
-- name : tingClientIntegrationWebTest
+# - name : tingClientIntegrationWebTest
 # DrupalUnitTestCase and DrupalWebTestCase
 #   path :
 #     Path to file, if different from default path, and named different than <test suite>.test
