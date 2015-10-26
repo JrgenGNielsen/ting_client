@@ -8,16 +8,27 @@
  * Class webServiceMockup
  */
 class webServiceMockup extends TingClientRequest{
+  private $cacheEnable = TRUE;
+  private $cacheTimeout = 0;
+
+  public function setCacheEnable($value){
+    $this->cacheEnable = $value;
+  }
+
+  public function setCacheTimeout($value){
+    $this->cacheTimeout = $value;
+  }
+
   public function processResponse(stdClass $response) {
     return $response;
   }
 
   public function cacheEnable($value = NULL) {
-    return FALSE;
+    return $this->cacheEnable;
   }
 
   public function cacheTimeout($value = NULL) {
-    return 0;
+    return $this->cacheTimeout;
   }
 
 }

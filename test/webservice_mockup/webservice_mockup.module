@@ -10,8 +10,8 @@
  */
 function webservice_mockup_ting_client_webservice() {
   $ret = array();
-  $ret['webservice_mockup']['class'] = 'webservice_mockup';
-  $ret['webservice_mockup']['url'] = url('test/ting_client/mockup');
+  $ret['webservice_mockup']['class'] = 'webServiceMockup';
+  $ret['webservice_mockup']['url'] = url('test/ting_client/mockup', array('absolute'=>true));
   $ret['webservice_mockup']['xsdNamespace'] = array(0 => 'http://oss.dbc.dk/ns/forsrights');
   return $ret;
 }
