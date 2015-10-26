@@ -57,7 +57,7 @@ class ting_client_class extends TingClient {
     // @see libraries/TingCLient/cache/TingClientCacher.php
 
     // check overall caching
-    if (variable_get('webservice_client_enable_cache', FALSE) !== FALSE ) {
+    if (variable_get('webservice_client_enable_cache', TRUE) ) {
       // check caching for individual request
       if (ting_client_class::cacheEnable($request) !== FALSE) {
         $cacher = new TingClientDrupalCacher($request);

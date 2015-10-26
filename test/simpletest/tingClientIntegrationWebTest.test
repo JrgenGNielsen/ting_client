@@ -75,8 +75,4 @@ class tingClientIntegrationWebTest extends DrupalWebTestCase {
     // cache is enabled - use drupal cacher
     $this->assertTrue($cacher->getValue($client_class) instanceof TingClientDrupalCacher, 'drupal cacher set');
   }
-
-  public function tearDown(){
-    parent::tearDown();
-  }
 }

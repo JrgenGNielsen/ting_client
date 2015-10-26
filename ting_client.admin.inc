@@ -11,7 +11,7 @@ function ting_client_admin_webservices_settings($form_state) {
   $form['webservice_client_enable_cache'] = array(
     '#title' => 'Enable all caches, overwrite (disable) for individual requests below',
     '#type' => 'checkbox',
-    '#default_value' => variable_get('webservice_client_enable_cache'),
+    '#default_value' => variable_get('webservice_client_enable_cache', TRUE),
   );
 
   //@TODO add additional configuration to webservices in webservice hook
