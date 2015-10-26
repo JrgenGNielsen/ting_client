@@ -41,7 +41,20 @@ class ting_client_class extends TingClient {
       $this->getRequestFactory()->addToUrls($webservices);
     }
 
-    $request = $this->getRequestFactory()->getNamedRequest($name, $params);
+    try {
+      $request = $this->getRequestFactory()->getNamedRequest($name, $params);
+    }
+    catch (TingClientException $e) {
+      drupal_set_message($e->getMessage(), 'ting client','error');
+      return;
+    }
+
+    $cacher = new TingClientDrupalCacher($request);
+    $this->setCacher($cacher);
+
+    $logger = new TingClientDrupalLogger();
+    $this->setLogger($logger);
+
     $response = $this->execute($request);
 
     return $response;

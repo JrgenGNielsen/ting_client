@@ -23,7 +23,7 @@ function ting_client_init() {
 
 /**
  * Initialize ting_client_class and do the request
- * 
+ *
  * @param string $name
  *  Name of the request
  * @param array $params

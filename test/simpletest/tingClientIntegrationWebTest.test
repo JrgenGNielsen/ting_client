@@ -1,4 +1,12 @@
 <?php
+
+/**
+ * @file
+ *
+ * Class tingClientIntegrationWebTest
+ *
+ * Test if TingClient library integrates wiht drupal
+ */
 class tingClientIntegrationWebTest extends DrupalWebTestCase {
 
   public static function getInfo() {
@@ -9,7 +17,42 @@ class tingClientIntegrationWebTest extends DrupalWebTestCase {
     );
   }
 
-  private function testHest() {
-    $this->assertTrue('hest' == 'hest','Hest is always true');
+  public function setUp() {
+    parent::setUp();
+    module_enable(array('ting_client', 'webservice_mockup'));
+  }
+
+
+  /**
+   * Test that dependenciy (libraries) on ting_client are set.
+   * Also test that ting_client_class is included.
+   */
+  public function testDependencies() {
+    // libraries is a dependency from ting_client
+    $this->assertTrue(module_exists('libraries'), 'libraries enabled as dependency');
+
+    $this->assertTrue(module_exists('ting_client'), 'ting_client enabled');
+    $this->assertTrue(class_exists('ting_client_class'), 'ting_client_class loaded');
+
+    $client = new ting_client_class();
+    $settings = variable_get('ting_client_webservice_definitions');
+    $this->assertFalse($settings, 'There are no webservices yet');
+  }
+
+  /**
+   * Test ting_client_do_request method on mockuup webservice.
+   * The do_request (ting_client_class::do_request) invokes HOOK_ting_client_webservice.
+   * Test that variable is set after executing.
+   */
+  public function testWebservicHook(){
+    $this->assertTrue(module_exists('webservice_mockup'), 'webservice_mockup enabled as expected');
+    $params = array('action' => 'hest');
+    ting_client_do_request('webservice_mockup', $params);
+    $settings = variable_get('ting_client_webservice_definitions');
+    $this->assertTrue(is_array($settings), 'HOOK_ting_client_webservice works as expected');
+  }
+
+  public function tearDown(){
+    parent::tearDown();
   }
 }

@@ -1,0 +1,40 @@
+<?php
+/**
+ * @file
+ *
+ * Webservice mockup
+ */
+
+/**
+ * Implements hook_ting_client_webservice()
+ */
+function webservice_mockup_ting_client_webservice() {
+  $ret = array();
+  $ret['webservice_mockup']['class'] = 'webservice_mockup';
+  $ret['webservice_mockup']['url'] = url('test/ting_client/mockup');
+  $ret['webservice_mockup']['xsdNamespace'] = array(0 => 'http://oss.dbc.dk/ns/forsrights');
+  return $ret;
+}
+
+/**
+ * Implements hook_menu().
+ */
+function webservice_mockup_menu() {
+  return array(
+    'test/ting_client/mockup' => array(
+      'title' => 'webservice_mockup',
+    'type' => MENU_CALLBACK,
+    'description' => '',
+    'access callback' => TRUE,
+    'page callback' => 'webservice_mockup_response',
+    ),
+  );
+}
+
+/**
+ * Mockup a response
+ */
+function webservice_mockup_response(){
+  drupal_json_output(array('hest'));
+  drupal_exit();
+}

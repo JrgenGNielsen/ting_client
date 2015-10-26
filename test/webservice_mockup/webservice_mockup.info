@@ -1,0 +1,7 @@
+name = webservice mockup
+description = test module for integration with TingClient library
+core = 7.x
+package = Netpunkt libraries
+files[] = webServiceMockup.php
+
+
