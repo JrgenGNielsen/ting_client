@@ -37,6 +37,12 @@ function ting_client_do_request ($name, $params) {
   return $response;
 }
 
+function ting_client_get_webservices() {
+  $client = new ting_client_class();
+  $services = $client->getWebservices();
+  return $services;
+}
+
 /**
  * Implements hook_menu
  *
