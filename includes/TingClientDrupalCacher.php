@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @file TingClientDrupalCacher.php
+ *
+ * Class TingClientDrupalCacher
+ */
 class TingClientDrupalCacher implements TingClientCacherInterface {
 
   /**
@@ -7,32 +12,48 @@ class TingClientDrupalCacher implements TingClientCacherInterface {
    */
   private $request;
 
+  /**
+   * Constructor
+   *
+   * @param \TingClientRequest $request
+   */
   public function __construct(TingClientRequest $request) {
     $this->request = $request;
   }
 
-  private function cacheEnable() {
-    $class_name = get_class($this->request);
-    return variable_get($class_name . TingClientRequest::CACHEENABLE);
-  }
-
-  private function cacheTimeOut() {
-    $class_name = get_class($this->request);
-    return variable_get($class_name . TingClientRequest::CACHELIFETIME);
-  }
-
+  /**
+   * Set cache.
+   *
+   * @param string $key
+   * @param string $value
+   */
   function set($key, $value) {
-    cache_set($key, $value);
-    // TODO: Implement set() method.
+    $bin = $this->request->cacheBin();
+    $timeout = ting_client_class::cacheTimeout($this->request);
+    $expire = REQUEST_TIME + (60 * $timeout);
+    cache_set($key, $value, $bin, $expire);
   }
 
+  /**
+   * Get from cache.
+   *
+   * @param string $key
+   *
+   * @return bool
+   */
   function get($key) {
+    $cache = cache_get($key, $this->request->cacheBin());
+    // handle cache timeout
+    if ($cache && $cache->expire > 0 && $cache->expire > REQUEST_TIME) {
+      return $cache;
+    }
     return FALSE;
-    // TODO: Implement get() method.
   }
 
+  /**
+   * Clear cache
+   */
   function clear() {
-    // TODO: Implement clear() method.
+    cache_clear_all(NULL, $this->request->cacheBin());
   }
-
 }
