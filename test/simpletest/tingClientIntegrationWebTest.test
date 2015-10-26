@@ -47,9 +47,33 @@ class tingClientIntegrationWebTest extends DrupalWebTestCase {
   public function testWebservicHook(){
     $this->assertTrue(module_exists('webservice_mockup'), 'webservice_mockup enabled as expected');
     $params = array('action' => 'hest');
-    ting_client_do_request('webservice_mockup', $params);
+    $response = ting_client_do_request('webservice_mockup', $params);
     $settings = variable_get('ting_client_webservice_definitions');
     $this->assertTrue(is_array($settings), 'HOOK_ting_client_webservice works as expected');
+  }
+
+  /**
+   * Test cacher is set according to cache settings.
+   */
+  public function testCacher(){
+    $client_class = new ting_client_class();
+    // do a request - it sets the webservices, cacher and logger
+    $params = array('action'=>'hest', 'fugle' => array('stær', 'solsort'));
+    $client_class->do_request('webservice_mockup', $params);
+
+    // use reflection to get the cacher
+    $obj = new ReflectionObject($client_class);
+    $cacher = $obj->getProperty('cacher');
+    $cacher->setAccessible(TRUE);
+    // caching is not enabled - use default cacher
+    $this->assertTrue($cacher->getValue($client_class) instanceof TingClientCacher, 'default cache set');
+
+    // enable caching
+    variable_set('webservice_client_enable_cache', 1);
+    variable_set('webServiceMockup_cache_enable', 1);
+    $client_class->do_request('webservice_mockup', $params);
+    // cache is enabled - use drupal cacher
+    $this->assertTrue($cacher->getValue($client_class) instanceof TingClientDrupalCacher, 'drupal cacher set');
   }
 
   public function tearDown(){
