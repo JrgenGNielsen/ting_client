@@ -8,28 +8,78 @@
 function ting_client_admin_webservices_settings($form_state) {
   $form = array();
 
-  // @TODO this can be done as a loop on webservices.
-  // like this:
-  // $webservices = ting_client_get_webservices();
-  // foreach ($webservices .....
-
-  $form['forsrights'] = array(
-    '#type' => 'fieldset',
-    '#title' => t('Forsrights settings'),
-    '#collapsible' => TRUE,
-    '#collapsed' => FALSE,
-    '#tree' => FALSE,
+  $form['webservice_client_enable_cache'] = array(
+    '#title' => 'Enable all caches, overwrite (disable) for individual requests below',
+    '#type' => 'checkbox',
+    '#default_value' => variable_get('webservice_client_enable_cache'),
   );
 
-  $form['forsrights']['bibdk_forsrights_url'] = array(
-    '#type' => 'textfield',
-    '#title' => t('forsrights URL'),
-    '#description' => t('URL to the forsrights webservice, e.g. http://forsrights.addi.dk/'),
-    '#required' => TRUE,
-    '#default_value' => variable_get('bibdk_forsrights_url', ''),
-  );
+  //@TODO add additional configuration to webservices in webservice hook
+  // like this:  addi_config = array(name=>forsrights_name, pass=>forsrights_pass) etc.
 
-  // @TODO add cache control
+  $webservices = ting_client_get_webservices();
+  $cache_prefix = TingClientRequest::CACHEENABLE;
+  $timeout_prefix = TingClientRequest::CACHELIFETIME;
+
+  foreach ($webservices as $name => $settings) {
+    // check if webservice definition is valid
+    if (ting_client_check_webservice_settings($name, $settings) === FALSE) {
+      continue;
+    }
+
+    $form[$name] = array(
+      '#type' => 'fieldset',
+      '#title' => $name . ' ' . 'settings',
+      '#collapsible' => TRUE,
+      '#collapsed' => TRUE,
+      '#tree' => FALSE,
+    );
+
+    $form[$name][$settings['class'] . '_url'] = array(
+      '#type' => 'textfield',
+      '#title' => $name . ' ' . 'URL',
+      '#description' => t('URL to the %name webservice ', array('%name' => $name)),
+      '#required' => TRUE,
+      '#default_value' => variable_get($settings['class'] . '_url', ''),
+    );
+
+    $form[$name][$settings['class'] . $cache_prefix] = array(
+      '#title' => t('Enable %name caches', array('%name' => $name)),
+      '#type' => 'checkbox',
+      '#default_value' => variable_get($settings['class'] . $cache_prefix),
+    );
+
+    $form[$name][$settings['class'] . $timeout_prefix] = array(
+      '#title' => 'Cache lifetime',
+      '#type' => 'textfield',
+      '#default_value' => variable_get($settings['class'] . $timeout_prefix),
+      '#description' => 'For how many minutes to cache',
+    );
+  }
 
   return system_settings_form($form);
 }
+
+/**
+ * Check if given settings are valid.
+ *
+ * @param string $name
+ * @param array  $settings
+ *
+ * @return bool
+ */
+function ting_client_check_webservice_settings($name, array $settings) {
+  if (empty($settings['class'])) {
+    drupal_set_message('No class for ' . $name, 'error');
+    return FALSE;
+  }
+
+  if (empty($settings['url'])) {
+    drupal_set_message('No URL for ' . $name, 'error');
+    return FALSE;
+  }
+
+  return TRUE;
+}
+
+
