@@ -1,5 +1,5 @@
 <?php
-class tingClientUnitTest extends DrupalUnitTestCase {
+class dummyTingClientUnitTest extends DrupalUnitTestCase {
 
   public static function getInfo() {
     return array(

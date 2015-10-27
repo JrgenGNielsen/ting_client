@@ -33,8 +33,8 @@ selenium :
 #     Path to file, if different from default path, and named different than <test suite>.py
 #     Default path: test/selenium/<test suite>.py
 simpletest :
-- name : tingClientUnitTest
-- name : tingClientWebTest
+- name : dummyTingClientUnitTest
+- name : dummyTingClientWebTest
 - name : tingClientIntegrationWebTest
 # DrupalUnitTestCase and DrupalWebTestCase
 #   path :
