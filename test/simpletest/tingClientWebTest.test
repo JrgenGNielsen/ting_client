@@ -1,0 +1,19 @@
+<?php
+class tingClientWebTest extends DrupalWebTestCase {
+
+  public static function getInfo() {
+    return array(
+      'name' => 'Ting Client Dummy Drupal Web Test',
+      'description' => 'dummy test to automated testing up and running',
+      'group' => 'Netpunkt',
+    );
+  }
+
+  public function testDummy() {
+    $this->assertTrue('foo' == 'foo','Dummy test return true');
+  }
+
+  public function testDummy2() {
+    $this->assertFalse('foo' == 'bar','Dummy test return false');
+  }
+}
