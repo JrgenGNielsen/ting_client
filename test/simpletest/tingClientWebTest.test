@@ -14,6 +14,6 @@ class tingClientWebTest extends DrupalWebTestCase {
   }
 
   public function testDummy2() {
-    $this->assertTrue('foo' == 'bar','Dummy test return false');
+    $this->assertFalse('foo' == 'bar','Dummy test return false');
   }
 }
