@@ -16,13 +16,13 @@
  * 'outputType' => 'json',
  * );
  *
- * $client = new ting_client_class()
- * $response = $client->do_request('forsrights', $params)
+ * $response = ting_client_do_request('forsrights', $params)
  *
  * Sorry for the name - it is for easier integration with bibliotek.dk.
  * It will be refactored later on.
  */
 class ting_client_class extends TingClient {
+
   /**
    * Execute a request.
    *
@@ -34,7 +34,7 @@ class ting_client_class extends TingClient {
    *  Whether to overwrite cache settings
    *
    * @return string
-   * @throws \TingClientException
+   * @throws TingClientException
    */
   public function do_request($name, $params, $cache_me = TRUE) {
     // @TODO start timer
@@ -44,6 +44,7 @@ class ting_client_class extends TingClient {
     }
 
     try {
+      /** @var TingClientRequest $request */
       $request = $this->getRequestFactory()->getNamedRequest($name, $params);
     }
     catch (TingClientException $e) {
@@ -51,12 +52,12 @@ class ting_client_class extends TingClient {
       return FALSE;
     }
 
-    // only use drupal caccher if caching is set
+    // Only use drupal cacher if caching is set
     // @see admin/config/serviceclient/settings
     // Otherwise use default cacher in TingClient library
     // @see libraries/TingCLient/cache/TingClientCacher.php
 
-    // check overall caching
+    // Check overall caching.
     if (variable_get('webservice_client_enable_cache', TRUE) ) {
       // check caching for individual request
       if (ting_client_class::cacheEnable($request) !== FALSE) {
@@ -65,19 +66,19 @@ class ting_client_class extends TingClient {
       }
     }
 
-    // alwaays use drupal logger
+    // Always use drupal logger.
     $logger = new TingClientDrupalLogger();
     $this->setLogger($logger);
     // execute request
     $response = $this->execute($request);
     // @ TODO stop timer
-    return $response;
+    return $request->parseResponse($response);
   }
 
   /**
    * Should given request be cached ?
    *
-   * @param \TingClientRequest $request
+   * @param TingClientRequest $request
    *
    * @return string|bool
    */
