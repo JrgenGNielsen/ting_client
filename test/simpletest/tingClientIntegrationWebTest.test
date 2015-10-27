@@ -34,9 +34,11 @@ class tingClientIntegrationWebTest extends DrupalWebTestCase {
     $this->assertTrue(module_exists('ting_client'), 'ting_client enabled');
     $this->assertTrue(class_exists('ting_client_class'), 'ting_client_class loaded');
 
-    $client = new ting_client_class();
-    $settings = variable_get('ting_client_webservice_definitions');
-    $this->assertFalse($settings, 'There are no webservices yet');
+    if (class_exists('ting_client_class')) {
+      $client = new ting_client_class();
+      $settings = variable_get('ting_client_webservice_definitions');
+      $this->assertFalse($settings, 'There are no webservices yet');
+    }
   }
 
   /**
