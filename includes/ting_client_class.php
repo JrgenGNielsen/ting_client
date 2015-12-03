@@ -42,13 +42,17 @@ class ting_client_class extends TingClient {
     if ($webservices = $this->getWebservices()) {
       $this->getRequestFactory()->addToUrls($webservices);
     }
+    
+    // Check if the url has been set yet.
+    if ($webservices[$name]['class'] . '_url' == $webservices[$name]['url']) {
+      return FALSE;
+    }
 
     try {
       /** @var TingClientRequest $request */
       $request = $this->getRequestFactory()->getNamedRequest($name, $params);
-    }
-    catch (TingClientException $e) {
-      drupal_set_message($e->getMessage(), 'ting client','error');
+    } catch (TingClientException $e) {
+      drupal_set_message($e->getMessage(), 'ting client', 'error');
       return FALSE;
     }
 
@@ -58,7 +62,7 @@ class ting_client_class extends TingClient {
     // @see libraries/TingCLient/cache/TingClientCacher.php
 
     // Check overall caching.
-    if (variable_get('webservice_client_enable_cache', TRUE) ) {
+    if (variable_get('webservice_client_enable_cache', TRUE)) {
       // check caching for individual request
       if (ting_client_class::cacheEnable($request) !== FALSE) {
         $cacher = new TingClientDrupalCacher($request);
@@ -69,10 +73,16 @@ class ting_client_class extends TingClient {
     // Always use drupal logger.
     $logger = new TingClientDrupalLogger();
     $this->setLogger($logger);
-    // execute request
-    $response = $this->execute($request);
-    // @ TODO stop timer
-    return $request->parseResponse($response);
+    try {
+      // execute request
+      $response = $this->execute($request);
+      // @ TODO stop timer
+      $result = $request->parseResponse($response);
+    } catch (Exception $e) {
+      // Do nothing.
+      $result = FALSE;
+    }
+    return $result;
   }
 
   /**
