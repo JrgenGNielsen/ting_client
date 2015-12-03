@@ -13,8 +13,7 @@ function ting_client_init() {
   $path = libraries_get_path('TingClient');
   if (!empty($path)) {
     require_once $path . '/lib/TingClient.php';
-  }
-  else{
+  } else {
     // This exception is for the developer to handle
     drupal_set_message('Missing TingCLient library', 'error');
   }
@@ -26,12 +25,15 @@ function ting_client_init() {
  *
  * @param string $name
  *  Name of the request
- * @param array $params
+ * @param array  $params
  *  Parameters for the request.
  *
  * @return string
  */
-function ting_client_do_request ($name, $params) {
+function ting_client_do_request($name, $params) {
+  if (!class_exists('TingClient')) {
+    return false;
+  }
   $client = new ting_client_class();
   $response = $client->do_request($name, $params);
   return $response;
