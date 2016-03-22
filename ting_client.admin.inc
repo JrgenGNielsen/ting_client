@@ -21,6 +21,29 @@ function ting_client_admin_webservices_settings($form_state) {
   $cache_prefix = TingClientRequest::CACHEENABLE;
   $timeout_prefix = TingClientRequest::CACHELIFETIME;
 
+  $form['ting_config'] = array(
+    '#type' => 'fieldset',
+    '#title' => 'Ting client settings',
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
+    '#tree' => FALSE,
+  );
+
+  $form['ting_config']['ting_client_agency'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Library code'),
+    '#description' => t('The 6-digit code representing the library organization'),
+    '#default_value' => variable_get('ting_client_agency', ''),
+  );
+
+  $form['ting_config']['ting_client_profile'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Search profile'),
+    '#description' => t('Profile name, used for filtering the search based on settings from vip.dbc.dk.'),
+    '#default_value' => variable_get('ting_client_profile', ''),
+  );
+
+
   foreach ($webservices as $name => $settings) {
     // check if webservice definition is valid
     if (ting_client_check_webservice_settings($name, $settings) === FALSE) {
