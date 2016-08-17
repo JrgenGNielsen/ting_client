@@ -24,6 +24,19 @@
 class ting_client_class extends TingClient {
 
   /**
+   * for backward compatibility
+   *
+   * @param $old_name
+   * @return mixed
+   */
+  private function map_old($old_name) {
+    $map = array(
+    'agency' => 'AgencyRequest',
+    );
+
+    return isset($map[$old_name]) ? $map[$old_name] : $old_name;
+  }
+  /**
    * Execute a request.
    *
    * @param string    $name
@@ -38,6 +51,7 @@ class ting_client_class extends TingClient {
    */
   public function do_request($name, $params, $cache_me = TRUE) {
     // @TODO start timer
+    $name = $this->map_old($name);
 
     if ($webservices = $this->getWebservices()) {
       $this->getRequestFactory()->addToUrls($webservices);
@@ -64,7 +78,7 @@ class ting_client_class extends TingClient {
     // Check overall caching.
     if (variable_get('webservice_client_enable_cache', TRUE)) {
       // check caching for individual request
-      if (ting_client_class::cacheEnable($request) !== FALSE) {
+      if (ting_client_class::cacheEnable($request)) {
         $cacher = new TingClientDrupalCacher($request);
         $this->setCacher($cacher);
       }
@@ -119,12 +133,27 @@ class ting_client_class extends TingClient {
     $webservices = variable_get('ting_client_webservice_definitions', FALSE);
     if ($webservices === FALSE) {
       $webservices = module_invoke_all('ting_client_webservice');
+      $webservices = $this->map_webservice_array($webservices);
       $this->placeholdersToVariable($webservices);
       // set services variable
       variable_set('ting_client_webservice_definitions', $webservices);
     }
 
     return $webservices;
+  }
+
+  /**
+   * for backward compatibility
+   * @param $webservices
+   * @return array
+   */
+  private function map_webservice_array($webservices) {
+    $mapped = array();
+    foreach($webservices as $name => $settings){
+      $name = $this->map_old($name);
+      $mapped[$name] = $settings;
+    }
+    return $mapped;
   }
 
   /**
