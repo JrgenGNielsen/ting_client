@@ -78,6 +78,16 @@ function ting_client_admin_webservices_settings($form_state) {
       '#default_value' => variable_get($settings['class'] . $timeout_prefix),
       '#description' => 'For how many minutes to cache',
     );
+
+    if(isset($settings['xsd_url'])){
+      $form[$name][$settings['class'] . '_xsd_url'] = array(
+        '#title' => $name . ' XSD url',
+        '#type' => 'textfield',
+        '#default_value' => variable_get($settings['class'] . '_xsd_url', ''),
+        '#required' => TRUE,
+        '#description' => t('URL to the %name xsd ', array('%name' => $name)),
+      );
+    }
   }
 
   return system_settings_form($form);
