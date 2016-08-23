@@ -24,14 +24,18 @@
 class ting_client_class extends TingClient {
 
   /**
-   * for backward compatibility
+   * for backward compatibility. Ting client depends on autoloading classes. so
+   * the name of the webservice MUST be the same as the class name. It was not so
+   * before this refactoring. This method handles requests written for the old
+   * tingClient as it maps the name of the service to the classname.
    *
    * @param $old_name
    * @return mixed
    */
   private function map_old($old_name) {
     $map = array(
-    'agency' => 'AgencyRequest',
+      'agency' => 'AgencyRequest',
+      'holdingstatus' => 'openHoldingsStatus',
     );
 
     return isset($map[$old_name]) ? $map[$old_name] : $old_name;
@@ -84,7 +88,7 @@ class ting_client_class extends TingClient {
       }
     }
 
-    // Always use drupal logger.
+    // Always use drupal logger
     $logger = new TingClientDrupalLogger();
     $this->setLogger($logger);
     try {
@@ -93,6 +97,7 @@ class ting_client_class extends TingClient {
       // @ TODO stop timer
       $result = $request->parseResponse($response);
     } catch (Exception $e) {
+      $this->logger->log($e->getMessage(),array(), 'ERROR');
       // Do nothing.
       $result = FALSE;
     }
@@ -133,6 +138,7 @@ class ting_client_class extends TingClient {
     $webservices = variable_get('ting_client_webservice_definitions', FALSE);
     if ($webservices === FALSE) {
       $webservices = module_invoke_all('ting_client_webservice');
+      // map for backward compatibility
       $webservices = $this->map_webservice_array($webservices);
       $this->placeholdersToVariable($webservices);
       // set services variable
