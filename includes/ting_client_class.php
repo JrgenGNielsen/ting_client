@@ -32,7 +32,7 @@ class ting_client_class extends TingClient {
    * @param $old_name
    * @return mixed
    */
-  private function map_old($old_name) {
+  private function mapOld($old_name) {
     $map = array(
       'agency' => 'AgencyRequest',
       'holdingstatus' => 'openHoldingsStatus',
@@ -55,7 +55,7 @@ class ting_client_class extends TingClient {
    */
   public function do_request($name, $params, $cache_me = TRUE) {
     // @TODO start timer
-    $name = $this->map_old($name);
+    $name = $this->mapOld($name);
 
     if ($webservices = $this->getWebservices()) {
       $this->getRequestFactory()->addToUrls($webservices);
@@ -139,7 +139,7 @@ class ting_client_class extends TingClient {
     if ($webservices === FALSE) {
       $webservices = module_invoke_all('ting_client_webservice');
       // map for backward compatibility
-      $webservices = $this->map_webservice_array($webservices);
+      $webservices = $this->mapWebserviceArray($webservices);
       $this->placeholdersToVariable($webservices);
       // set services variable
       variable_set('ting_client_webservice_definitions', $webservices);
@@ -153,10 +153,10 @@ class ting_client_class extends TingClient {
    * @param $webservices
    * @return array
    */
-  private function map_webservice_array($webservices) {
+  private function mapWebserviceArray($webservices) {
     $mapped = array();
     foreach($webservices as $name => $settings){
-      $name = $this->map_old($name);
+      $name = $this->mapOld($name);
       $mapped[$name] = $settings;
     }
     return $mapped;
