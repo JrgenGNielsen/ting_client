@@ -32,11 +32,19 @@ class ting_client_class extends TingClient {
    * @param $old_name
    * @return mixed
    */
-  private function mapOld($old_name) {
+  private function mapOld($old_name, &$settings=array()) {
     $map = array(
       'agency' => 'AgencyRequest',
       'holdingstatus' => 'openHoldingsStatus',
+      'openorder' => 'bibdk_openorder'
     );
+
+    if(isset($map[$old_name]) && !empty($settings)) {
+      if(isset($settings['xsd_url'])){
+        $settings['xsd_url'] = $map[$old_name].'_xsd_url';
+      }
+      $settings['url'] = $map[$old_name].'_url';
+    }
 
     return isset($map[$old_name]) ? $map[$old_name] : $old_name;
   }
@@ -156,8 +164,8 @@ class ting_client_class extends TingClient {
   private function mapWebserviceArray($webservices) {
     $mapped = array();
     foreach($webservices as $name => $settings){
-      $name = $this->mapOld($name);
-      $mapped[$name] = $settings;
+      $new_name = $this->mapOld($name, $settings);
+      $mapped[$new_name] = $settings;
     }
     return $mapped;
   }
