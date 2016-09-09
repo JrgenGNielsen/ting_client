@@ -21,6 +21,46 @@ function ting_client_init() {
 
 
 /**
+ * Execute a getObjectRequest. Pass in parameters to overwrite defaults.
+ *
+ * Example: We want docbook as xml
+ * $params = array('objectFormat' => 'docbook',
+ *                 'outputType' => 'xml',
+ *                 'identifier' => '870970-basis:26452910');
+ *
+ * @param array $params
+ *  Non default parameters - minimum identifier MUST be set
+ */
+function ting_client_do_get_object(array $params){
+  if(!isset($params['identifier'])) {
+    throw new TingClientException('Id MUST be set to get an object');
+  }
+
+  // Make sure id is an array
+  if(!is_array($params['identifier'])) {
+    $params['identifier'] = array($params['identifier']);
+  }
+
+  $default_params = array(
+    'profile' => variable_get('ting_client_profile', 'default'),
+    'agency' => variable_get('ting_client_agency', '190101'),
+    'action' => 'getObjectRequest',
+    'objectFormat' => 'briefDisplay',
+    'outputType' => 'json',
+  );
+  //Mix in defaults. Given params has precedence.
+  $real_params = $params + $default_params;
+  try {
+   return ting_client_do_request('getObject', $real_params);
+  }
+  catch(Exception $e){
+    watchdog('ting_client', 'Something went wrong: @errormessage', array('@errormessage' => $e->getMessage()), WATCHDOG_ERROR);
+    return FALSE;
+  }
+}
+
+
+/**
  * Initialize ting_client_class and do the request
  *
  * @param string $name
