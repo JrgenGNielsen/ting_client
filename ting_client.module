@@ -30,6 +30,8 @@ function ting_client_init() {
  *
  * @param array $params
  *  Non default parameters - minimum identifier MUST be set
+ *
+ * @return stdClass|boolean
  */
 function ting_client_do_get_object(array $params){
   if(!isset($params['identifier'])) {
