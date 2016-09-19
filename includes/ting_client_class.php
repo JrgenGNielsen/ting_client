@@ -58,7 +58,7 @@ class ting_client_class extends TingClient {
    * @param bool|TRUE $cache_me
    *  Whether to overwrite cache settings
    *
-   * @return string
+   * @return mixed
    * @throws TingClientException
    */
   public function do_request($name, $params, $cache_me = TRUE) {
@@ -68,9 +68,10 @@ class ting_client_class extends TingClient {
     if ($webservices = $this->getWebservices()) {
       $this->getRequestFactory()->addToUrls($webservices);
     }
-    
+
     // Check if the url has been set yet.
     if ($webservices[$name]['class'] . '_url' == $webservices[$name]['url']) {
+      watchdog('ting_client', $name . ': ' . 'Url ' . $webservices[$name]['url'] . ' is not configured', array(), WATCHDOG_ERROR);
       return FALSE;
     }
 
