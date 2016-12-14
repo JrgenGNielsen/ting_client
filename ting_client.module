@@ -88,6 +88,18 @@ function ting_client_get_webservices() {
 }
 
 /**
+ * Implements hook_permission
+ */
+function ting_client_permission() {
+  return array(
+    'administer webservices settings' => array(
+      'title' => t('Administer webservices'),
+      'description' => t('Allow users administer webservice settings.'),
+    ),
+  );
+}
+
+/**
  * Implements hook_menu
  *
  * @return array
