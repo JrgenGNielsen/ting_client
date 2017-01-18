@@ -8,7 +8,16 @@
 function ting_client_admin_webservices_settings($form_state) {
   $form = array();
 
-  $form['webservice_client_enable_cache'] = array(
+  $form['ting_cache'] = array(
+    '#type' => 'fieldset',
+    '#title' => 'Ting cache settings',
+    '#collapsible' => TRUE,
+    '#collapsed' => FALSE,
+    '#tree' => FALSE,
+    '#weight' => -20,
+  );
+
+  $form['ting_cache']['webservice_client_enable_cache'] = array(
     '#title' => 'Enable all caches, overwrite (disable) for individual requests below',
     '#type' => 'checkbox',
     '#default_value' => variable_get('webservice_client_enable_cache', TRUE),
