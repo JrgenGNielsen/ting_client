@@ -106,7 +106,12 @@ class ting_client_class extends TingClient {
       // @ TODO stop timer
       $result = $request->parseResponse($response);
     } catch (Exception $e) {
-      $this->logger->log($e->getMessage(),array(), 'ERROR');
+      $logvars = array(
+        'action' => $request->getParameter('action'),
+        'wsdlUrl' => $request->getWsdlUrl(),
+        'error' => $e->getMessage()
+      );
+      $this->logger->log('soap_request_error',$logvars, 'ERROR');
       // Do nothing.
       $result = FALSE;
     }

@@ -8,6 +8,12 @@
  * Basically class wraps watchdog.
  */
 class TingClientDrupalLogger extends TingClientLogger{
+  /**
+   * @param $message_type
+   * @param $variables
+   *   array with variables [action, wsdlUrl,
+   * @param $severity
+   */
   public function doLog($message_type, $variables, $severity) {
     $variables['time'] = $this->log_time;
     $vars = array();
