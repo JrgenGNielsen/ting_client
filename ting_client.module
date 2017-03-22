@@ -126,7 +126,34 @@ function ting_client_menu() {
     'file' => 'ting_client.admin.inc'
   );
 
+  $items['admin/config/serviceclient/overview'] = array(
+    'title' => 'View services in use',
+    'description' => 'View services in use.',
+    'page callback' => 'ting_client_view_services',
+    'access arguments' => array('administer webservices settings')
+  );
+
   return $items;
+}
+
+function ting_client_view_services() {
+  $client = new ting_client_class();
+  $services = $client->getWebservices();
+  $header = array('NAME', 'URL');
+  $rows = array();
+  foreach($services as $name => $service){
+    $rows[] = array($name, $service['url']);
+  }
+
+  $rows = array_merge($rows, ting_client_loose_services());
+  return theme('table', array('header' => $header, 'rows' => $rows));
+}
+
+function ting_client_loose_services() {
+  $rows = array();
+//autocomplete
+  $rows[] = array('Autocomplete', variable_get('bibdk_autocomplete_rest_url'));
+  return $rows;
 }
 
 /**
