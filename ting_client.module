@@ -13,7 +13,8 @@ function ting_client_init() {
   $path = libraries_get_path('TingClient');
   if (!empty($path)) {
     require_once $path . '/lib/TingClient.php';
-  } else {
+  }
+  else {
     // This exception is for the developer to handle
     drupal_set_message('Missing TingCLient library', 'error');
   }
@@ -33,13 +34,13 @@ function ting_client_init() {
  *
  * @return stdClass|boolean
  */
-function ting_client_do_get_object(array $params){
-  if(!isset($params['identifier'])) {
+function ting_client_do_get_object(array $params) {
+  if (!isset($params['identifier'])) {
     throw new TingClientException('Id MUST be set to get an object');
   }
 
   // Make sure id is an array
-  if(!is_array($params['identifier'])) {
+  if (!is_array($params['identifier'])) {
     $params['identifier'] = array($params['identifier']);
   }
 
@@ -53,10 +54,11 @@ function ting_client_do_get_object(array $params){
   //Mix in defaults. Given params has precedence.
   $real_params = $params + $default_params;
   try {
-   return ting_client_do_request('getObject', $real_params);
+    return ting_client_do_request('getObject', $real_params);
   }
-  catch(Exception $e){
-    watchdog('ting_client', 'Something went wrong: @errormessage', array('@errormessage' => $e->getMessage()), WATCHDOG_ERROR);
+  catch (Exception $e) {
+    watchdog('ting_client', 'Something went wrong: @errormessage',
+      array('@errormessage' => $e->getMessage()), WATCHDOG_ERROR);
     return FALSE;
   }
 }
@@ -67,7 +69,7 @@ function ting_client_do_get_object(array $params){
  *
  * @param string $name
  *  Name of the request
- * @param array  $params
+ * @param array $params
  *  Parameters for the request.
  *
  * @return string
@@ -136,12 +138,20 @@ function ting_client_menu() {
   return $items;
 }
 
+/**
+ * Get services defined for ting_client.
+ *
+ * @return string
+ *   Table html with a name and url of services
+ * @throws Exception
+ *   Drupals theme function may throw an exception - ignore
+ */
 function ting_client_view_services() {
   $client = new ting_client_class();
   $services = $client->getWebservices();
   $header = array('NAME', 'URL');
   $rows = array();
-  foreach($services as $name => $service){
+  foreach ($services as $name => $service) {
     $rows[] = array($name, $service['url']);
   }
 
@@ -149,9 +159,13 @@ function ting_client_view_services() {
   return theme('table', array('header' => $header, 'rows' => $rows));
 }
 
+/**
+ * Get services NOT handled by ting_client
+ * @return array
+ */
 function ting_client_loose_services() {
   $rows = array();
-//autocomplete
+  //autocomplete
   $rows[] = array('Autocomplete', variable_get('bibdk_autocomplete_rest_url'));
   return $rows;
 }
