@@ -47,7 +47,7 @@ function ting_client_do_get_object(array $params){
     'profile' => variable_get('ting_client_profile', 'default'),
     'agency' => variable_get('ting_client_agency', '190101'),
     'action' => 'getObjectRequest',
-    'objectFormat' => 'briefDisplay',
+    'objectFormat' => 'netpunkt_brief',
     'outputType' => 'json',
   );
   //Mix in defaults. Given params has precedence.
