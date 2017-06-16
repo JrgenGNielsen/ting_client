@@ -82,11 +82,17 @@ class ting_client_class extends TingClient {
       drupal_set_message($e->getMessage(), 'ting client', 'error');
       return FALSE;
     }
+    
+    // Return cache information from ting_mockup.
+    $mockup_cache_result = module_invoke_all('ting_client_mockup_cache_get', $request->cacheKey());
+    if ($mockup_cache_result['status'] == TRUE) {
+      return $mockup_cache_result['record'];
+    }
 
     // Only use drupal cacher if caching is set
     // @see admin/config/serviceclient/settings
     // Otherwise use default cacher in TingClient library
-    // @see libraries/TingCLient/cache/TingClientCacher.php
+    // @see libraries/TingCLient/lib/cache/TingClientCacher.php
 
     // Check overall caching.
     if (variable_get('webservice_client_enable_cache', TRUE)) {
@@ -115,6 +121,10 @@ class ting_client_class extends TingClient {
       // Do nothing.
       $result = FALSE;
     }
+    
+    // Cache result in ting_mockup.
+    module_invoke_all('ting_client_mockup_cache_set', $request->cacheKey(), $result);
+
     return $result;
   }
 
