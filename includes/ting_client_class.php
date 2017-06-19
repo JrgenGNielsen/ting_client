@@ -82,10 +82,10 @@ class ting_client_class extends TingClient {
       drupal_set_message($e->getMessage(), 'ting client', 'error');
       return FALSE;
     }
-    
+
     // Return cache information from ting_mockup.
     $mockup_cache_result = module_invoke_all('ting_client_mockup_cache_get', $request->cacheKey());
-    if ($mockup_cache_result['status'] == TRUE) {
+    if (isset($mockup_cache_result) && $mockup_cache_result['status'] == TRUE) {
       return $mockup_cache_result['record'];
     }
 
@@ -121,7 +121,7 @@ class ting_client_class extends TingClient {
       // Do nothing.
       $result = FALSE;
     }
-    
+
     // Cache result in ting_mockup.
     module_invoke_all('ting_client_mockup_cache_set', $request->cacheKey(), $result);
 
