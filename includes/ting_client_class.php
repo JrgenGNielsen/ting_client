@@ -85,7 +85,8 @@ class ting_client_class extends TingClient {
 
     // Return cache information from ting_mockup.
     $mockup_cache_result = module_invoke_all('ting_client_mockup_cache_get', $request->cacheKey());
-    if (isset($mockup_cache_result) && $mockup_cache_result['status'] == TRUE) {
+    dpm($mockup_cache_result);
+    if (!empty($mockup_cache_result) && $mockup_cache_result['status'] == TRUE) {
       return $mockup_cache_result['record'];
     }
 
