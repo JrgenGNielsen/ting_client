@@ -21,18 +21,24 @@ class TingClientDrupalLogger extends TingClientLogger{
       $vars['@'.$key] = $value;
     }
     switch($message_type){
-      case 'soap_request_complete':
-        $message = 'Completed SOAP request @action @wsdlUrl ( @time s). Request body: @requestBody';
+      case 'request_complete':
+        $message = "Completed @requestMethod request: @action @wsdlUrl ( @time s)";
         break;
-      case 'soap_request_error':
-        $message = 'Error handling SOAP request @action @wsdlUrl: @error';
+      case 'request_error':
+        $message = "Error handling @requestMethod request @action @wsdlUrl: @error";
         break;
       default :
         $vars['@type'] = $message_type;
-        $message = '@type request @action @wsdlUrl ( @time s). Request body: @requestBody';
+        $message = "@type request: @action @wsdlUrl ( @time s)";
+    }
+    if (!empty($variables['requestBody'])) {
+      $message .= "<br/>\nRequest body: @requestBody";
+    }
+    if (!empty($variables['requestMethod']) && $variables['requestMethod'] == 'REST') {
+      $message .= "<br/>\nParameters: @params";
     }
 
-    watchdog('ting client',$message, $variables,
+    watchdog('ting client', $message, $vars,
       constant('WATCHDOG_' . $severity),
       'http://' . $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"]);
   }

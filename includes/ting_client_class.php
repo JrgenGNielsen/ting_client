@@ -82,7 +82,7 @@ class ting_client_class extends TingClient {
       drupal_set_message($e->getMessage(), 'ting client', 'error');
       return FALSE;
     }
-    
+
     // Return cache information from ting_mockup.
     $mockup_cache_result = module_invoke_all('ting_client_mockup_cache_get', $request->cacheKey());
     if ($mockup_cache_result['status'] == TRUE) {
@@ -114,10 +114,13 @@ class ting_client_class extends TingClient {
     } catch (Exception $e) {
       $logvars = array(
         'action' => $request->getParameter('action'),
+        'params' => http_build_query($request->getParameters()),
         'wsdlUrl' => $request->getWsdlUrl(),
+        'requestBody' => NULL,
+        'requestMethod' => $request->getRequestMethod(),
         'error' => $e->getMessage()
       );
-      $this->logger->log('soap_request_error',$logvars, 'ERROR');
+      $this->logger->log('request_error', $logvars, 'ERROR');
       // Do nothing.
       $result = FALSE;
     }
