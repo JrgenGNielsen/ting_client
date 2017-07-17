@@ -114,10 +114,13 @@ class ting_client_class extends TingClient {
     } catch (Exception $e) {
       $logvars = array(
         'action' => $request->getParameter('action'),
+        'params' => http_build_query($request->getParameters()),
         'wsdlUrl' => $request->getWsdlUrl(),
+        'requestBody' => NULL,
+        'requestMethod' => $request->getRequestMethod(),
         'error' => $e->getMessage()
       );
-      $this->logger->log('soap_request_error',$logvars, 'ERROR');
+      $this->logger->log('request_error', $logvars, 'ERROR');
       // Do nothing.
       $result = FALSE;
     }

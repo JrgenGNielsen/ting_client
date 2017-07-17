@@ -90,10 +90,10 @@ class myrRequestClass extends TingClientRequest{
   }
 
   /**
-   * TingClient supports php soapclient and embedded NanoClient.
-   * @return string NANO|SOAPCLIENT
+   * TingClient supports embedded NanoClient and MicroCURL.
+   * @return string SOAP|REST
   **/
-  public function getClientType() {
-    return 'NANO';
+  public function getRequestMethod() {
+    return 'SOAP';
   }
 }
