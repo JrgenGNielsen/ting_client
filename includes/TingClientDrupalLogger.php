@@ -22,10 +22,10 @@ class TingClientDrupalLogger extends TingClientLogger{
     }
     switch($message_type){
       case 'request_complete':
-        $message = "Completed @requestMethod request: @action @wsdlUrl ( @time s)";
+        $message = "Completed @clientType request: @action @wsdlUrl ( @time s)";
         break;
       case 'request_error':
-        $message = "Error handling @requestMethod request @action @wsdlUrl: @error";
+        $message = "Error handling @clientType request @action @wsdlUrl: @error";
         break;
       default :
         $vars['@type'] = $message_type;
@@ -34,7 +34,7 @@ class TingClientDrupalLogger extends TingClientLogger{
     if (!empty($variables['requestBody'])) {
       $message .= "<br/>\nRequest body: @requestBody";
     }
-    if (!empty($variables['requestMethod']) && $variables['requestMethod'] == 'REST') {
+    if (!empty($variables['clientType']) && $variables['clientType'] == 'REST') {
       $message .= "<br/>\nParameters: @params";
     }
 

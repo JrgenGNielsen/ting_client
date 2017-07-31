@@ -117,7 +117,7 @@ class ting_client_class extends TingClient {
         'params' => http_build_query($request->getParameters()),
         'wsdlUrl' => $request->getWsdlUrl(),
         'requestBody' => NULL,
-        'requestMethod' => $request->getRequestMethod(),
+        'clientType' => $request->getClientType(),
         'error' => $e->getMessage()
       );
       $this->logger->log('request_error', $logvars, 'ERROR');
