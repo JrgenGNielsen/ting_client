@@ -48,6 +48,7 @@ class ting_client_class extends TingClient {
 
     return isset($map[$old_name]) ? $map[$old_name] : $old_name;
   }
+
   /**
    * Execute a request.
    *

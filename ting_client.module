@@ -36,7 +36,7 @@ function ting_client_init() {
  */
 function ting_client_do_get_object(array $params) {
   if (!isset($params['identifier'])) {
-    throw new TingClientException('Id MUST be set to get an object');
+    throw new TingClientException('params["identifier"] MUST be set to get an object');
   }
 
   // Make sure id is an array
