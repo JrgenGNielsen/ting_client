@@ -3,11 +3,32 @@
  * Module defines ting_client_class (see includes/ting_client_class.php)
  */
 
+function ting_client_libraries_info() {
+
+  $libraries['TingClient'] = array(
+    'name' => 'TingClient',
+    'vendor url' => 'https://www.dbc.dk',
+    'download url' => 'https://git.dbc.dk',
+    'version arguments' => array(
+      'file' => 'README.md',
+      'pattern' => '/Version ([\d.]+)/i',
+      'lines' => 1,
+    ),
+    'files' => array(
+      'php' => array(
+        'lib/TingClient.php',
+      ),
+    ),
+  );
+
+  return $libraries;
+}
+
 /**
  * Implements hook_init().
  *
  * Include TingClient. If TingClient is not there it is headache of the developer.
- */
+ *
 function ting_client_init() {
   // Include TingClient library
   $path = libraries_get_path('TingClient');
@@ -19,7 +40,7 @@ function ting_client_init() {
     drupal_set_message('Missing TingCLient library', 'error');
   }
 }
-
+*/
 
 /**
  * Execute a getObjectRequest. Pass in parameters to overwrite defaults.
@@ -76,7 +97,9 @@ function ting_client_do_get_object(array $params) {
  */
 function ting_client_do_request($name, $params) {
   if (!class_exists('TingClient')) {
-    return false;
+    if (!libraries_load('TingClient')) {
+      return false;
+    }
   }
   $client = new ting_client_class();
   $response = $client->do_request($name, $params);
