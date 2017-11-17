@@ -97,7 +97,15 @@ function ting_client_do_get_object(array $params) {
  */
 function ting_client_do_request($name, $params) {
 
-  libraries_load('TingClient');
+  if (!class_exists('TingClient')) {
+    $path = libraries_get_path('TingClient');
+    if (!empty($path)) {
+      require_once $path . '/lib/TingClient.php';
+    }
+    else {
+      return false;
+    }
+  }
   require_once drupal_get_path('module', 'ting_client') . '/includes/ting_client_class.php';
 
   $client = new ting_client_class();
