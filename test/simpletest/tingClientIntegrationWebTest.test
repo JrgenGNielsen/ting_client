@@ -19,7 +19,7 @@ class tingClientIntegrationWebTest extends DrupalWebTestCase {
 
   public function setUp() {
     parent::setUp();
-    module_enable(array('ting_client', 'webservice_mockup'));
+    module_enable(array('libraries', 'ting_client', 'webservice_mockup'));
   }
 
 
