@@ -20,6 +20,7 @@ class tingClientIntegrationWebTest extends DrupalWebTestCase {
   public function setUp() {
     parent::setUp();
     module_enable(array('libraries', 'ting_client', 'webservice_mockup'));
+    libraries_load('TingClient');
   }
 
 
@@ -28,17 +29,13 @@ class tingClientIntegrationWebTest extends DrupalWebTestCase {
    * Also test that ting_client_class is included.
    */
   public function testDependencies() {
-    // libraries is a dependency from ting_client
     $this->assertTrue(module_exists('libraries'), 'libraries enabled as dependency');
-
     $this->assertTrue(module_exists('ting_client'), 'ting_client enabled');
     $this->assertTrue(class_exists('ting_client_class'), 'ting_client_class loaded');
+    $this->assertTrue(libraries_load('TingClient'), 'TingClient loaded');
 
     if (class_exists('ting_client_class')) {
-      $path = libraries_get_path('TingClient');
-      if (!empty($path)) {
-        require_once $path . '/lib/TingClient.php';
-      }
+
       $client = new ting_client_class();
       $settings = variable_get('ting_client_webservice_definitions');
       $this->assertFalse($settings, 'There are no webservices yet');
