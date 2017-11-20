@@ -47,7 +47,7 @@ class tingClientIntegrationWebTest extends DrupalWebTestCase {
    * The do_request (ting_client_class::do_request) invokes HOOK_ting_client_webservice.
    * Test that variable is set after executing.
    */
-  public function testWebservicHook(){
+  public function testWebservicHook() {
     $this->assertTrue(module_exists('webservice_mockup'), 'webservice_mockup enabled as expected');
     $params = array('action' => 'hest');
     $response = ting_client_do_request('webservice_mockup', $params);
@@ -58,7 +58,7 @@ class tingClientIntegrationWebTest extends DrupalWebTestCase {
   /**
    * Test cacher is set according to cache settings.
    */
-  public function testCacher(){
+  public function testCacher() {
     $client_class = new ting_client_class();
     // do a request - it sets the webservices, cacher and logger
     $params = array('action'=>'hest', 'fugle' => array('stær', 'solsort'));
