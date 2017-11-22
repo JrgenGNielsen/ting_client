@@ -83,8 +83,8 @@ function ting_client_do_get_object(array $params) {
  * @return string
  */
 function ting_client_do_request($name, $params) {
-
-  if (!libraries_load('TingClient')) {
+  $library = libraries_load('TingClient');
+  if (!$library['loaded']) {
     $path = libraries_get_path('TingClient');
     require_once $path . "/lib/TingClient.php";
   }
