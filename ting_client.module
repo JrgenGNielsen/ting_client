@@ -84,15 +84,7 @@ function ting_client_do_get_object(array $params) {
  */
 function ting_client_do_request($name, $params) {
 
-  if (!class_exists('TingClient')) {
-    $path = libraries_get_path('TingClient');
-    if (!empty($path)) {
-      require_once $path . '/lib/TingClient.php';
-    }
-    else {
-      return false;
-    }
-  }
+  libraries_load('TingClient');
   require_once drupal_get_path('module', 'ting_client') . '/includes/ting_client_class.php';
 
   $client = new ting_client_class();
@@ -102,13 +94,7 @@ function ting_client_do_request($name, $params) {
 
 function ting_client_get_webservices() {
   if (!class_exists('TingClient')) {
-    $path = libraries_get_path('TingClient');
-    if (!empty($path)) {
-      require_once $path . '/lib/TingClient.php';
-    }
-    else {
-      return false;
-    }
+    libraries_load('TingClient');
   }
   $client = new ting_client_class();
   $services = $client->getWebservices();
