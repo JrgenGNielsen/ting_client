@@ -4,22 +4,30 @@
  */
 
 /**
- * Implements hook_init().
+ * Setting up TingClient for libraries API.
  *
- * Include TingClient. If TingClient is not there it is headache of the developer.
+ * @return array
  */
-function ting_client_init() {
-  // Include TingClient library
-  $path = libraries_get_path('TingClient');
-  if (!empty($path)) {
-    require_once $path . '/lib/TingClient.php';
-  }
-  else {
-    // This exception is for the developer to handle
-    drupal_set_message('Missing TingCLient library', 'error');
-  }
-}
+function ting_client_libraries_info() {
 
+  $libraries['TingClient'] = array(
+    'name' => 'TingClient',
+    'vendor url' => 'https://www.dbc.dk',
+    'download url' => 'https://git.dbc.dk',
+    'version arguments' => array(
+      'file' => 'README.md',
+      'pattern' => '/Version ([\d.]+)/i',
+      'lines' => 1,
+    ),
+    'files' => array(
+      'php' => array(
+        'lib/TingClient.php',
+      ),
+    ),
+  );
+
+  return $libraries;
+}
 
 /**
  * Execute a getObjectRequest. Pass in parameters to overwrite defaults.
@@ -75,15 +83,22 @@ function ting_client_do_get_object(array $params) {
  * @return string
  */
 function ting_client_do_request($name, $params) {
-  if (!class_exists('TingClient')) {
-    return false;
+  $library = libraries_load('TingClient');
+  if (!$library['loaded']) {
+    $path = libraries_get_path('TingClient');
+    require_once $path . "/lib/TingClient.php";
   }
+  require_once drupal_get_path('module', 'ting_client') . '/includes/ting_client_class.php';
+
   $client = new ting_client_class();
   $response = $client->do_request($name, $params);
   return $response;
 }
 
 function ting_client_get_webservices() {
+  if (!class_exists('TingClient')) {
+    libraries_load('TingClient');
+  }
   $client = new ting_client_class();
   $services = $client->getWebservices();
   return $services;
