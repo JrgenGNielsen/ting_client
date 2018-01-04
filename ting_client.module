@@ -91,9 +91,6 @@ function ting_client_do_request($name, $params) {
 }
 
 function ting_client_get_webservices() {
-  if (!class_exists('TingClient')) {
-    libraries_load('TingClient');
-  }
   $client = new ting_client_class();
   $services = $client->getWebservices();
   return $services;
