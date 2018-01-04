@@ -23,9 +23,6 @@ function ting_client_admin_webservices_settings($form_state) {
     '#default_value' => variable_get('webservice_client_enable_cache', TRUE),
   );
 
-  //@TODO add additional configuration to webservices in webservice hook
-  // like this:  addi_config = array(name=>forsrights_name, pass=>forsrights_pass) etc.
-
   $webservices = ting_client_get_webservices();
   $cache_prefix = TingClientRequest::CACHEENABLE;
   $timeout_prefix = TingClientRequest::CACHELIFETIME;
