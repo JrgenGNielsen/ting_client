@@ -9,7 +9,3 @@ files[] = includes/ting_client_class.php
 files[] = Exceptions/TingClientMissingLibraryExcepption.php
 ;tests
 files[] = test/simpletest/tingClientIntegrationWebTest.test
-
-;dependencies[] = libraries
-
-
