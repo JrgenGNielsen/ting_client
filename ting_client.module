@@ -4,32 +4,6 @@
  */
 
 /**
- * Setting up TingClient for libraries API.
- *
- * @return array
- */
-function ting_client_libraries_info() {
-
-  $libraries['TingClient'] = array(
-    'name' => 'TingClient',
-    'vendor url' => 'https://www.dbc.dk',
-    'download url' => 'https://git.dbc.dk',
-    'version arguments' => array(
-      'file' => 'README.md',
-      'pattern' => '/Version ([\d.]+)/i',
-      'lines' => 1,
-    ),
-    'files' => array(
-      'php' => array(
-        'lib/TingClient.php',
-      ),
-    ),
-  );
-
-  return $libraries;
-}
-
-/**
  * Execute a getObjectRequest. Pass in parameters to overwrite defaults.
  *
  * Example: We want docbook as xml
