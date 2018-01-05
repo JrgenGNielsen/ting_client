@@ -5,7 +5,7 @@
  *
  *  Check if TingClient library is present
  */
-function ting_client_requirements($phase) {
+/*function ting_client_requirements($phase) {
   $requirements = array();
   // we know that libraries module is there - it is in dependencies
   // disregard the phase - always check
@@ -18,7 +18,7 @@ function ting_client_requirements($phase) {
   }
 
   return $requirements;
-}
+}*/
 
 
 /**
