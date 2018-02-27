@@ -18,11 +18,12 @@ class tingClientIntegrationWebTest extends DrupalWebTestCase {
   }
 
   public function setUp() {
-    parent::setUp('webservice_mockup','ting_client', 'netpunkt_frontend');
-    // run boot_hook in netpunkt_frontend ..hook_boot is only run on
+    parent::setUp('webservice_mockup','ting_client');
+    // run boot_hook in netpunkt_composer ..hook_boot is only run on
     // page loads .. this test is more like a unit test - it hss no page loads
     // but needs to be run as webtestCase because of database calls (variable_set)
-    netpunkt_frontend_boot();
+    netpunkt_composer_boot();
+    menu_rebuild();
   }
 
   public function testRunner(){
@@ -37,7 +38,7 @@ class tingClientIntegrationWebTest extends DrupalWebTestCase {
   public function Dependencies() {
     $this->assertTrue(module_exists('ting_client'), 'ting_client enabled');
     $this->assertTrue(class_exists('ting_client_class'), 'ting_client_class loaded');
-    $this->assertTrue(module_exists('netpunkt_frontend'), 'netpunkt frontend enables');
+    $this->assertTrue(module_exists('netpunkt_composer'), 'netpunkt composer enables');
     $this->assertTrue(class_exists('TingClient'), 'TincClient loaded with autoload');
     if (class_exists('ting_client_class')) {
       $client = new ting_client_class();
