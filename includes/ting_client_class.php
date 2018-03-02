@@ -36,7 +36,7 @@ class ting_client_class extends TingClient {
   private function mapOld($old_name, &$settings=array()) {
     $map = array(
       'agency' => 'AgencyRequest',
-      'holdingstatus' => 'openHoldingsStatus',
+      'holdingstatus' => 'openHoldingStatus',
       'openorder' => 'bibdk_openorder'
     );
 
