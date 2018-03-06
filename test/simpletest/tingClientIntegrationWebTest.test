@@ -18,24 +18,29 @@ class tingClientIntegrationWebTest extends DrupalWebTestCase {
   }
 
   public function setUp() {
-    parent::setUp();
-    module_enable(array('libraries', 'ting_client', 'webservice_mockup'));
-    libraries_load('TingClient');
+    parent::setUp('webservice_mockup','ting_client');
+    // run boot_hook in netpunkt_composer ..hook_boot is only run on
+    // page loads .. this test is more like a unit test - it hss no page loads
+    // but needs to be run as webtestCase because of database calls (variable_set)
+    netpunkt_composer_boot();
+    menu_rebuild();
   }
 
-
+  public function testRunner(){
+    $this->Dependencies();
+    $this->Cacher();
+    $this->WebservicHook();
+  }
   /**
    * Test that dependenciy (libraries) on ting_client are set.
    * Also test that ting_client_class is included.
    */
-  public function testDependencies() {
-    $this->assertTrue(module_exists('libraries'), 'libraries enabled as dependency');
+  public function Dependencies() {
     $this->assertTrue(module_exists('ting_client'), 'ting_client enabled');
     $this->assertTrue(class_exists('ting_client_class'), 'ting_client_class loaded');
-    $this->assertTrue(libraries_load('TingClient'), 'TingClient loaded');
-
+    $this->assertTrue(module_exists('netpunkt_composer'), 'netpunkt composer enables');
+    $this->assertTrue(class_exists('TingClient'), 'TincClient loaded with autoload');
     if (class_exists('ting_client_class')) {
-
       $client = new ting_client_class();
       $settings = variable_get('ting_client_webservice_definitions');
       $this->assertFalse($settings, 'There are no webservices yet');
@@ -47,7 +52,7 @@ class tingClientIntegrationWebTest extends DrupalWebTestCase {
    * The do_request (ting_client_class::do_request) invokes HOOK_ting_client_webservice.
    * Test that variable is set after executing.
    */
-  public function testWebservicHook() {
+  public function WebservicHook() {
     $this->assertTrue(module_exists('webservice_mockup'), 'webservice_mockup enabled as expected');
     $params = array('action' => 'hest');
     $response = ting_client_do_request('webservice_mockup', $params);
@@ -58,7 +63,7 @@ class tingClientIntegrationWebTest extends DrupalWebTestCase {
   /**
    * Test cacher is set according to cache settings.
    */
-  public function testCacher() {
+ public function Cacher() {
     $client_class = new ting_client_class();
     // do a request - it sets the webservices, cacher and logger
     $params = array('action'=>'hest', 'fugle' => array('stær', 'solsort'));

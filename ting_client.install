@@ -1,26 +1,4 @@
 <?php
-
-/**
- * Implements hook_requirements
- *
- *  Check if TingClient library is present
- */
-function ting_client_requirements($phase) {
-  $requirements = array();
-  // we know that libraries module is there - it is in dependencies
-  // disregard the phase - always check
-  $path = libraries_get_path('TingClient');
-  if (empty($path)) {
-    $requirements['TingClient'] = array(
-      'description' => t('TingCLient library missing'),
-      'severity' => REQUIREMENT_ERROR,
-    );
-  }
-
-  return $requirements;
-}
-
-
 /**
  * Implements HOOK_schema()
  *
