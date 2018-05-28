@@ -14,7 +14,7 @@ class TingClientDrupalLogger extends TingClientLogger{
    *   array with variables [action, wsdlUrl,
    * @param $severity
    */
-  public function doLog($message_type, $variables, $severity) {
+  public function doLog($message_type, $variables, $severity, $raw_entry = array()) {
     $variables['time'] = $this->log_time;
     $vars = array();
     foreach ($variables as $key => $value){
