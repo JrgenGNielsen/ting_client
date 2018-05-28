@@ -122,7 +122,12 @@ class ting_client_class extends TingClient {
         'clientType' => $request->getClientType(),
         'error' => $e->getMessage()
       );
-      $this->logger->log('request_error', $logvars, 'ERROR');
+      $this->logger->log(
+        'request_error',
+        $logvars,
+        'ERROR',
+        array()
+      );
       // Do nothing.
       $result = FALSE;
     }
