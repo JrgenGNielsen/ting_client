@@ -1,0 +1,163 @@
+<?php
+/**
+ * Module defines ting_client_class (see includes/ting_client_class.php)
+ */
+
+/**
+ * Execute a getObjectRequest. Pass in parameters to overwrite defaults.
+ *
+ * Example: We want docbook as xml
+ * $params = array('objectFormat' => 'docbook',
+ *                 'outputType' => 'xml',
+ *                 'identifier' => '870970-basis:26452910');
+ *
+ * @param array $params
+ *  Non default parameters - minimum identifier MUST be set
+ *
+ * @return stdClass|boolean
+ */
+function ting_client_do_get_object(array $params) {
+  if (!isset($params['identifier'])) {
+    throw new TingClientException('params["identifier"] MUST be set to get an object');
+  }
+
+  // Make sure id is an array
+  if (!is_array($params['identifier'])) {
+    $params['identifier'] = array($params['identifier']);
+  }
+
+  $default_params = array(
+    'profile' => variable_get('ting_client_profile', 'default'),
+    'agency' => variable_get('ting_client_agency', '190101'),
+    'action' => 'getObjectRequest',
+    'objectFormat' => 'netpunkt_brief',
+    'outputType' => 'json',
+  );
+  //Mix in defaults. Given params has precedence.
+  $real_params = $params + $default_params;
+  try {
+    return ting_client_do_request('getObject', $real_params);
+  }
+  catch (Exception $e) {
+    watchdog('ting_client', 'Something went wrong: @errormessage',
+      array('@errormessage' => $e->getMessage()), WATCHDOG_ERROR);
+    return FALSE;
+  }
+}
+
+
+/**
+ * Initialize ting_client_class and do the request
+ *
+ * @param string $name
+ *  Name of the request
+ * @param array $params
+ *  Parameters for the request.
+ *
+ * @return string
+ */
+function ting_client_do_request($name, $params) {
+  require_once drupal_get_path('module', 'ting_client') . '/includes/ting_client_class.php';
+
+  $client = new ting_client_class();
+  $response = $client->do_request($name, $params);
+  return $response;
+}
+
+function ting_client_get_webservices() {
+  $client = new ting_client_class();
+  $services = $client->getWebservices();
+  return $services;
+}
+
+/**
+ * Implements hook_permission
+ */
+function ting_client_permission() {
+  return array(
+    'administer webservices settings' => array(
+      'title' => t('Administer webservices'),
+      'description' => t('Allow users administer webservice settings.'),
+    ),
+  );
+}
+
+/**
+ * Implements hook_menu
+ *
+ * @return array
+ */
+function ting_client_menu() {
+  $items['admin/config/serviceclient'] = array(
+    'title' => 'Webservice client settings',
+    'description' => 'Manage webservices.',
+    'position' => 'right',
+    'weight' => 20,
+    'page callback' => 'system_admin_menu_block_page',
+    'access arguments' => array('access administration pages'),
+    'file' => 'system.admin.inc',
+    'file path' => drupal_get_path('module', 'system'),
+  );
+
+  $items['admin/config/serviceclient/settings'] = array(
+    'title' => 'Urls and settings',
+    'description' => 'Manage webservice settings.',
+    'weight' => -20,
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('ting_client_admin_webservices_settings'),
+    'access arguments' => array('administer webservices settings'),
+    'file' => 'ting_client.admin.inc'
+  );
+
+  $items['admin/config/serviceclient/overview'] = array(
+    'title' => 'View services in use',
+    'description' => 'View services in use.',
+    'page callback' => 'ting_client_view_services',
+    'access arguments' => array('administer webservices settings')
+  );
+
+  return $items;
+}
+
+/**
+ * Get services defined for ting_client.
+ *
+ * @return string
+ *   Table html with a name and url of services
+ * @throws Exception
+ *   Drupals theme function may throw an exception - ignore
+ */
+function ting_client_view_services() {
+  $client = new ting_client_class();
+  $services = $client->getWebservices();
+  $header = array('NAME', 'URL');
+  $rows = array();
+  foreach ($services as $name => $service) {
+    $rows[] = array($name, $service['url']);
+  }
+
+  $rows = array_merge($rows, ting_client_loose_services());
+  return theme('table', array('header' => $header, 'rows' => $rows));
+}
+
+/**
+ * Get services NOT handled by ting_client
+ * @return array
+ */
+function ting_client_loose_services() {
+  $rows = array();
+  //autocomplete
+  $rows[] = array('Autocomplete', variable_get('bibdk_autocomplete_rest_url'));
+  return $rows;
+}
+
+/**
+ * Implements hook_flush_caches().
+ *
+ * Delete webservices variable.
+ */
+function ting_client_flush_caches() {
+  variable_del('ting_client_webservice_definitions');
+}
+
+
