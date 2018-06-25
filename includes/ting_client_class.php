@@ -22,7 +22,7 @@
  * It will be refactored later on.
  */
 
-class ting_client_class extends TingClient {
+class ting_client_class extends \TingClient {
 
   /**
    * for backward compatibility. Ting client depends on autoloading classes. so
