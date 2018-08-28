@@ -122,7 +122,7 @@ function ting_client_menu() {
 }
 
 /**
- * Fetch the webservices used by ex. ting_client_view_services & howru
+ * Fetch the webservices used by ex. ting_client_view_services & howru.
  *
  * @return array
  */
@@ -154,7 +154,8 @@ function ting_client_view_services() {
 }
 
 /**
- * Get services NOT handled by ting_client
+ * Get services NOT handled by ting_client.
+ *
  * @return array
  */
 function ting_client_loose_services() {
