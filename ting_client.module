@@ -45,22 +45,24 @@ function ting_client_do_get_object(array $params) {
   }
 }
 
-
 /**
  * Initialize ting_client_class and do the request
  *
- * @param string $name
+ * @param $name
  *  Name of the request
- * @param array $params
+ * @param $params
  *  Parameters for the request.
+ * @param bool $cache_me
+ *  Should it be cached.
  *
  * @return string
+ * @throws \TingClientException
  */
-function ting_client_do_request($name, $params) {
+function ting_client_do_request($name, $params, $cache_me = TRUE) {
   require_once drupal_get_path('module', 'ting_client') . '/includes/ting_client_class.php';
 
   $client = new ting_client_class();
-  $response = $client->do_request($name, $params);
+  $response = $client->do_request($name, $params, $cache_me);
   return $response;
 }
 
