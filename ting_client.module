@@ -120,6 +120,22 @@ function ting_client_menu() {
 }
 
 /**
+ * Fetch the webservices used by ex. ting_client_view_services & howru
+ *
+ * @return array
+ */
+function ting_client_fetch_services() {
+  $client = new ting_client_class();
+  $services = $client->getWebservices();
+  $rows = array();
+  foreach ($services as $name => $service) {
+    $rows[] = array($name, $service['url']);
+  }
+
+  return array_merge($rows, ting_client_loose_services());
+}
+
+/**
  * Get services defined for ting_client.
  *
  * @return string
@@ -128,15 +144,10 @@ function ting_client_menu() {
  *   Drupals theme function may throw an exception - ignore
  */
 function ting_client_view_services() {
-  $client = new ting_client_class();
-  $services = $client->getWebservices();
   $header = array('NAME', 'URL');
-  $rows = array();
-  foreach ($services as $name => $service) {
-    $rows[] = array($name, $service['url']);
-  }
 
-  $rows = array_merge($rows, ting_client_loose_services());
+  $rows = ting_client_fetch_services();
+
   return theme('table', array('header' => $header, 'rows' => $rows));
 }
 
