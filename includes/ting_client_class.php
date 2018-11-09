@@ -85,9 +85,12 @@ class ting_client_class extends TingClient {
       return FALSE;
     }
 
-    // Return cache information from ting_mockup.
-    $mockup_cache_result = module_invoke_all('ting_client_mockup_cache_get', $request->cacheKey());
-    if (!empty($mockup_cache_result) && $mockup_cache_result['status'] == TRUE) {
+    // Return cache information from ting_mockup. We need to save cachekey in
+    // a variable for the mockup (cache key changes in execute method)
+    $mockup_cache_key = $request->cacheKey();
+    $mockup_cache_result = module_invoke_all('ting_client_mockup_cache_get', $mockup_cache_key);
+
+    if (!empty($mockup_cache_result) && $mockup_cache_result['status'] === TRUE) {
       return $mockup_cache_result['record'];
     }
 
@@ -133,7 +136,7 @@ class ting_client_class extends TingClient {
     }
 
     // Cache result in ting_mockup.
-    module_invoke_all('ting_client_mockup_cache_set', $request->cacheKey(), $result);
+    module_invoke_all('ting_client_mockup_cache_set', $mockup_cache_key, $result);
 
     return $result;
   }
